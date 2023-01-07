@@ -8,7 +8,8 @@
 #include "serializer.h"
 
 // fake serial port
-uint8_t sendBuffer[] = "Long line for testing\nShort line\nTest\nToo long line for testing\n";
+uint8_t sendBuffer[] =
+    "Long line for testing\nShort line\nTest\nToo long line for testing\n";
 static uint8_t send_ptr = 0;
 
 uint8_t recvByte(void) {

@@ -1,8 +1,18 @@
 ### StreamSerialization
 
 This is a simple library for serializing byte streams to lines.
-
 It is useful for reading lines from a stream, such as a serial data stream.
+
+It is designed to be used in embedded systems, where efficiency is important.
+
+Communication is zero-copy, meaning that no data is copied, only pointers are used.
+
+Main features:
+* Zero copy (no copying of data, only pointers are used)
+* Written in C
+* No dynamic memory allocation
+* No dependencies
+
 
 #### Example
 
