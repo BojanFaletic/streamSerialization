@@ -67,6 +67,9 @@ void consumer() {
     // Read line from serializer
     char* line = serializer_read_data(&s);
     printf("Got line: %s\n", line);
+
+    // Free line
+    serializer_free_line(&s);
   }
 }
 ```

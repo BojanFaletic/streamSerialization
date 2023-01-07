@@ -65,8 +65,10 @@ void consume(void) {
       fprintf(stderr, "line is NULL\n");
       panic();
     }
-
     printf("%s\n", line);
+
+    // free line
+    serializer_free_line(&s);
   }
 }
 

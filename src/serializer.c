@@ -119,8 +119,19 @@ char *serializer_read_data(Serializer *ser) {
   // get pointer to string
   int index = ser->tail * ser->max_line_size;
   char *data = ser->_buffer + index;
+  return data;
+}
 
+/**
+ * @brief Free a line from the serializer.
+ * @param serializer The serializer.
+ * @return 0 on success, -1 on failure.
+ */
+uint8_t serializer_free_line(Serializer *ser) {
+  if (is_ring_buffer_empty(ser)) {
+    return SERIALIZER_READER_EMPTY;
+  }
   // increment tail
   ser->tail = (ser->tail + 1) % ser->depth;
-  return data;
+  return SERIALIZER_OK;
 }

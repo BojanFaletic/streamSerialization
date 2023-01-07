@@ -43,6 +43,9 @@ uint8_t serializer_commit_line(Serializer *ser);
 // remove string from serializer
 char *serializer_read_data(Serializer *serializer);
 
+// free string from serializer
+uint8_t serializer_free_line(Serializer *serializer);
+
 // enable C++ compatibility
 #ifdef __cplusplus
 }
