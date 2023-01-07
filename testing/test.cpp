@@ -3,14 +3,14 @@
 
 TEST(Serializer, init) {
   Serializer s;
-  serializer_init(&s);
+  serializer_init(&s, 10, 10);
   EXPECT_EQ(s.head, 0);
   EXPECT_EQ(s.tail, 0);
 }
 
 TEST(Serializer, push) {
   Serializer s;
-  serializer_init(&s);
+  serializer_init(&s, 10, 10);
   char *ptr = serializer_get_write_ptr(&s);
   sprintf(ptr, "Hello World");
   serializer_commit_line(&s, strlen(ptr));
@@ -20,7 +20,7 @@ TEST(Serializer, push) {
 
 TEST(Serializer, pop) {
   Serializer s;
-  serializer_init(&s);
+  serializer_init(&s, 10, 10);
   char *ptr = serializer_get_write_ptr(&s);
   sprintf(ptr, "Hello World");
   serializer_commit_line(&s, strlen(ptr));
@@ -32,7 +32,7 @@ TEST(Serializer, pop) {
 
 TEST(Serializer, multiple) {
   Serializer s;
-  serializer_init(&s);
+  serializer_init(&s, 2, 10);
   char *ptr = serializer_get_write_ptr(&s);
   if (ptr != NULL) {
     sprintf(ptr, "Hello World 1");

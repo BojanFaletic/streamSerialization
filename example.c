@@ -43,7 +43,7 @@ void RxInterruptHandler(void) {
   }
 
   if (byte != '\n') {
-    if (write_ptr < MAX_STRING_SIZE) {
+    if (write_ptr < s.max_line_size) {
       // add byte to line
       line[write_ptr++] = byte;
     } else {
@@ -95,7 +95,7 @@ int main() {
   sem_init(&sem, 0, 0);
 
   // init serializer
-  serializer_init(&s);
+  serializer_init(&s, 2, 32);
 
   // threads
   pthread_t producer;
@@ -109,5 +109,7 @@ int main() {
   pthread_join(producer, NULL);
   pthread_join(consumer, NULL);
 
+  // free serializer
+  serializer_free(&s);
   return 0;
 }

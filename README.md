@@ -10,7 +10,7 @@ Communication is zero-copy, meaning that no data is copied, only pointers are us
 Main features:
 * Zero copy (no copying of data, only pointers are used)
 * Written in C
-* No dynamic memory allocation
+* Single dynamic memory allocation
 * No dependencies
 
 ## Warning
