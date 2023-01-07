@@ -54,7 +54,7 @@ void RxCallback(uint8_t *data, uint16_t len) {
     }
     else {
       // Write data to serializer
-      serializer_write_data(&s, line+1, 1);
+      serializer_write_data(&s, data+i, 1);
     }
   }
 }
