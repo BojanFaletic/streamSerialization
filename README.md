@@ -18,13 +18,19 @@ This library is not thread safe. It is up to the user to ensure that only one th
 
 
 ## Configuration
-The serializer is configured by defining the following macros:
+The serializer is configured during initialization by passing a pointer to a `Serializer` struct, and a buffer to use for the serializer.
 
 ```c
-#define MAX_STRING_SIZE 32 // max string size
-#define BUFFER_SIZE 2      // number of strings
+Serial s;
+int main() {
+  serializer_init(&s, 2, 32);
+  // ..
+  serializer_free(&s);
+  return 0;
+}
 ```
-Static memory is allocated for the serializer, so the size of the serializer is determined by these macros. Any overflow must be handled by the user.
+
+The first argument is a pointer to the `Serializer` struct. This is used to store the state of the serializer. The second argument is the number of lines to store in the buffer. The third argument is the maximum length of a line.
 
 ## Example
 
@@ -38,37 +44,31 @@ Serial s;
 sem_t sem;
 
 void RxCallback(uint8_t *data, uint16_t len) {
-  static char* line = NULL;
-  static uint8_t line_len;
-
-  if (line == NULL){
-    line = serializer_get_write_ptr(&s);
-    line_len = 0;
-  }
-
   for (int i = 0; i < len; i++) {
     if (data[i] == '\n'){
-      serializer_commit(&s, line_len);
-      line = serializer_get_write_ptr(&s);
-      line_len = 0;
+      // Write newline to serializer
+      serializer_commit_line(&s);
+
+      // Signal consumer thread that a line is ready
       sem_post(&sem);
     }
     else {
-      line[line_len] = data[i];
-      line_len++;
-      line_len = line_len % MAX_STRING_SIZE;
+      // Write data to serializer
+      serializer_write_data(&s, line+1, 1);
     }
   }
 }
 
 void consumer() {
   while (1) {
+    // Wait for a line to be ready
     sem_wait(&sem);
-    char* line = serializer_get_read_ptr(&s);
+
+    // Read line from serializer
+    char* line = serializer_read_data(&s);
     printf("Got line: %s\n", line);
   }
 }
-
 ```
 
 Full example can be found `example.c`.

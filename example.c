@@ -29,34 +29,14 @@ sem_t sem;
 
 // fake interrupt handler
 void RxInterruptHandler(void) {
-  int byte = recvByte();
-  static uint8_t write_ptr;
-
-  static char *line = NULL;
-  if (line == NULL) {
-    line = serializer_get_write_ptr(&s);
-    if (line == NULL) {
-      fprintf(stderr, "serializer is full\n");
-      panic();
-    }
-    write_ptr = 0;
-  }
+  char byte = recvByte();
 
   if (byte != '\n') {
-    if (write_ptr < s.max_line_size) {
-      // add byte to line
-      line[write_ptr++] = byte;
-    } else {
-      // line is too long
-      write_ptr = 0;
-    }
+    // write byte
+    serializer_write_data(&s, &byte, 1);
   } else {
     // commit line
-    serializer_commit_line(&s, write_ptr);
-
-    // get new line
-    line = serializer_get_write_ptr(&s);
-    write_ptr = 0;
+    serializer_commit_line(&s);
 
     // signal consumer
     sem_post(&sem);
@@ -80,7 +60,7 @@ void consume(void) {
     sem_wait(&sem);
 
     // get line
-    char *line = serializer_get_read_ptr(&s);
+    char *line = serializer_read_data(&s);
     if (line == NULL) {
       fprintf(stderr, "line is NULL\n");
       panic();
