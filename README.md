@@ -72,3 +72,14 @@ void consumer() {
 ```
 
 Full example can be found `example.c`.
+
+## Running the example
+
+To run the example, you need to have cmake and make installed.
+
+```bash
+$ mkdir build && cd build
+$ cmake ..
+$ make
+$ ./serialize
+```
