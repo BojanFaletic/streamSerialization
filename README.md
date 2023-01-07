@@ -1,4 +1,4 @@
-### StreamSerialization
+# StreamSerialization
 
 This is a simple library for serializing byte streams to lines.
 It is useful for reading lines from a stream, such as a serial data stream.
@@ -13,8 +13,22 @@ Main features:
 * No dynamic memory allocation
 * No dependencies
 
+## Warning
+This library is not thread safe. It is up to the user to ensure that only one thread is reading and writing to the serializer at a time.
 
-#### Example
+
+## Configuration
+The serializer is configured by defining the following macros:
+
+```c
+#define MAX_STRING_SIZE 32 // max string size
+#define BUFFER_SIZE 2      // number of strings
+```
+Static memory is allocated for the serializer, so the size of the serializer is determined by these macros. Any overflow must be handled by the user.
+
+## Example
+
+Simple example of how to use the serializer. The serializer is used to read lines from a serial port, and print them to the console.
 
 ```c
 #include "serializer.h"
@@ -56,3 +70,5 @@ void consumer() {
 }
 
 ```
+
+Full example can be found `example.c`.
