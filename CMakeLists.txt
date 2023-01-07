@@ -11,12 +11,7 @@ include_directories(src)
 
 # enable gtest library
 enable_testing()
-
-# add gtest library
-find_package(GTest REQUIRED)
-add_executable(serialize_test test.cpp src/serializer.c)
-target_link_libraries(serialize_test gtest)
-gtest_discover_tests(serialize_test)
+add_subdirectory(testing)
 
 # main executable
 add_executable(serialize example.c src/serializer.c)
