@@ -38,7 +38,7 @@ void serializer_free(Serializer *serializer);
 
 // add string to serializer
 uint8_t serializer_write_data(Serializer *serializer, char *data, int size);
-uint8_t serializer_commit_line(Serializer *ser);
+uint8_t serializer_commit_line(Serializer *serializer);
 
 // remove string from serializer
 char *serializer_read_data(Serializer *serializer);
